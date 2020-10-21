@@ -1,4 +1,4 @@
-package com.example.RythmCalculator
+package com.example.RhytmCalculator
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-# RythmCalculator
+# RhytmCalculator
 
 A new Flutter project.
 

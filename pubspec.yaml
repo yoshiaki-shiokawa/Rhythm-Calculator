@@ -1,4 +1,4 @@
-name: RythmCalculator
+name: RhytmCalculator
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  flutter_launcher_icons: ^0.7.4
+  flutter_sequencer: ^0.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -35,6 +38,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true　
+  ios: true 
+  image_path: 'lib/assets/rhythmcalculator_icon.png'
+
 
 # The following section is specific to Flutter.
 flutter:
@@ -60,15 +69,19 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
+  fonts:
+     - family: RCNavigation
+       fonts:
+         - asset: fonts/RCNavigation.ttf
+     - family: MusicalNotes
+       fonts:
+         - asset: fonts/MusicalNotes.ttf
+     - family: MusicalRests
+       fonts:
+         - asset: fonts/MusicalRests.ttf
+     - family: VarelaRound
+       fonts:
+         - asset: fonts/VarelaRound-Regular.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
