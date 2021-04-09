@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:RhytmCalculator/r_c_navigation_icons.dart';
-import 'package:RhytmCalculator/musical_notes_icons.dart';
-import 'package:RhytmCalculator/musical_rests_icons.dart';
-import 'package:RhytmCalculator/sound_player.dart';
+import 'package:rhythm_calculator/r_c_navigation_icons.dart';
+import 'package:rhythm_calculator/musical_notes_icons.dart';
+import 'package:rhythm_calculator/musical_rests_icons.dart';
+import 'package:rhythm_calculator/sound_player.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -34,17 +35,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  SoundPlayer player = SoundPlayer();
-  int _selectedIndex = 0;
-  int _selectedPad = 0;
-  List<List<int>> _notesNumber = [
+  final List<List<int>> _notesNumber = [
     [1, 2, 3, 4, 5, 6],
     [11, 12, 13, 14, 15, 16],
     [-1, -2, -3, -4, -5, -6],
     [-11, -12, -13, -14, -15, -16]
   ];
-  List<List<int>> _track = []; // Notes 1,2,3,4,5,6 pitch velocity*10
-  List<List<Widget>> notesAndRests = [
+  final List<List<Widget>> notesAndRests = [
     [
       Icon(MusicalNotes.semibreve),
       Icon(MusicalNotes.minim),
@@ -78,6 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
       Icon(MusicalRests.dotteddemisemiquaver)
     ]
   ];
+  SoundPlayer player = SoundPlayer();
+  int _selectedIndex = 0;
+  int _selectedPad = 0;
+  List<List<int>> _track = []; // Notes 1,2,3,4,5,6 pitch
 
   void _onItemTapped(int index) {
     setState(() {
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Icon _selectPlayPause() {
-    if (player.isPlaying) {
+    if (player.isPlaying()) {
       return Icon(Icons.stop);
     } else {
       return Icon(Icons.play_arrow_rounded);
@@ -161,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () {
         setState(() {
           _track.clear();
+          player.clearTrack();
         });
       },
     ));
@@ -181,6 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () {
         setState(() {
           _track.removeLast();
+          player.deleteNotefromTrack();
         });
       },
     ));
@@ -204,11 +207,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       onTap: () {
         setState(() {
-          if (!player.isPlaying) {
-            player.clearTrack();
-            player.convert(_track);
+          if (player.isPlaying()) {
+            player.stopPlaying();
+          } else {
+            player.playTrack();
           }
-          player.handleTogglePlayPause();
         });
       },
     ));
@@ -230,7 +233,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           setState(() {
-            _track.add([_notesNumber[_selectedPad][x], 60, 7]);
+            _track.add([_notesNumber[_selectedPad][x], 60]);
+            if (_notesNumber[_selectedPad][x] > 0) {
+            } else {
+              if (_notesNumber[_selectedPad][x] < 10) {
+                player.addNoteToTrack(
+                    -4 / pow(2, -1 * _notesNumber[_selectedPad][x]), 60);
+              } else {
+                player.addNoteToTrack(
+                    (-4 / pow(2, -1 * _notesNumber[_selectedPad][x] - 10) +
+                        4 / pow(2, -1 * _notesNumber[_selectedPad][x] - 9)),
+                    60);
+              }
+            }
           });
         },
       ));
@@ -278,7 +293,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onTap: () {
           setState(() {
-            _track.add([_notesNumber[_selectedPad][x], 60, 7]);
+            _track.add([_notesNumber[_selectedPad][x], 60]);
+            if (_notesNumber[_selectedPad][x] > 0) {
+            } else {
+              if (_notesNumber[_selectedPad][x] < 10) {
+                player.addNoteToTrack(
+                    -4 / pow(2, -1 * _notesNumber[_selectedPad][x]), 60);
+              } else {
+                player.addNoteToTrack(
+                    (-4 / pow(2, -1 * _notesNumber[_selectedPad][x] - 10) +
+                        4 / pow(2, -1 * _notesNumber[_selectedPad][x] - 9)),
+                    60);
+              }
+            }
           });
         },
       ));

@@ -1,4 +1,4 @@
-name: RhytmCalculator
+name: rhythm_calculator
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -25,7 +25,8 @@ dependencies:
     sdk: flutter
   
   flutter_launcher_icons: ^0.7.4
-  flutter_sequencer: ^0.1.2
+  flutter_midi: ^1.0.2
+  tuple: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
