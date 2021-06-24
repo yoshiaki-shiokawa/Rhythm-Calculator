@@ -1,19 +1,28 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_midi/flutter_midi.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sound_generator/sound_generator.dart';
+import 'package:sound_generator/waveTypes.dart';
 import 'package:tuple/tuple.dart';
 
 class SoundPlayer {
-  FlutterMidi player = FlutterMidi();
   int tempo = 60;
   bool playing = false;
-  List<Tuple2<double, int>> track = List.empty();
+  waveTypes waveType = waveTypes.SINUSOIDAL;
+  List<Tuple2<double, int>> track = [];
+
+  SoundPlayer() {
+    SoundGenerator.init(96000);
+    SoundGenerator.setAutoUpdateOneCycleSample(true);
+    SoundGenerator.refreshOneCycleData();
+    SoundGenerator.setVolume(1);
+    SoundGenerator.setBalance(0);
+    setTone('Happy Mellow');
+    debugPrint("Sound Generator initiallised");
+  }
 
   void setTone(String fileName) {
-    rootBundle
-        .load("assets/sf2/$fileName.sf2")
-        .then((file) => player.prepare(sf2: file, name: "$fileName.sf2"));
+    SoundGenerator.setWaveType(waveType);
   }
 
   bool isPlaying() {
@@ -25,6 +34,7 @@ class SoundPlayer {
   }
 
   void addNoteToTrack(double length, int pitch) {
+    debugPrint("length: $length, pitch: $pitch");
     track.add(Tuple2<double, int>(length, pitch));
   }
 
@@ -38,20 +48,35 @@ class SoundPlayer {
     track = List.empty();
   }
 
-  Future<void> playTrack() async {
+  Future<void> play() async {
     playing = true;
+    playing = compute(playTrack, track) as bool;
+  }
+
+  bool playTrack(List<Tuple2<double, int>> track) {
     for (Tuple2<double, int> note in track) {
-      if (playing) {
-        if (note.item1 > 0) {
-          player.playMidiNote(midi: note.item2);
-        }
-        sleep(Duration(microseconds: 60 * note.item1 * 1000000 ~/ tempo));
-        player.stopMidiNote(midi: note.item2);
+      if (note.item1 > 0) {
+        SoundGenerator.setFrequency(261.625565);
+        SoundGenerator.play();
       }
+      sleep(Duration(microseconds: 60 * note.item1.abs() * 1000000 ~/ tempo));
+      SoundGenerator.stop();
     }
+    return false;
+  }
+
+  void playTest() {
+    playing = true;
+    SoundGenerator.setFrequency(261.625565);
+    SoundGenerator.play();
   }
 
   void stopPlaying() {
     playing = false;
+    SoundGenerator.stop();
+  }
+
+  void dispose() {
+    SoundGenerator.release();
   }
 }
