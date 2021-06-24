@@ -34,7 +34,6 @@ class SoundPlayer {
   }
 
   void addNoteToTrack(double length, int pitch) {
-    debugPrint("length: $length, pitch: $pitch");
     track.add(Tuple2<double, int>(length, pitch));
   }
 
@@ -45,12 +44,12 @@ class SoundPlayer {
   }
 
   void clearTrack() {
-    track = List.empty();
+    track = [];
   }
 
   Future<void> play() async {
     playing = true;
-    playing = compute(playTrack, track) as bool;
+    playing = playTrack(track);
   }
 
   bool playTrack(List<Tuple2<double, int>> track) {

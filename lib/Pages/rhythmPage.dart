@@ -339,7 +339,7 @@ class RhythmPageState extends State<RhythmPage> {
               height: maxHeight - (((size.width - 50) / 4) * 3 + 40),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.grey,
+                color: Colors.grey.shade400,
               ),
               child: Stack(
                 alignment: Alignment.center,
